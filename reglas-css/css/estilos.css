@@ -1,0 +1,39 @@
+#parrafo-rojo{
+	color:red;
+	font-weight: bold;
+}
+.parrafo-rosado{
+	color:pink;
+}
+
+#parrafo-rojo, .parrafo-rosado, h1{
+	text-decoration: underline;
+}
+
+a{
+	color:black;
+}
+
+p a{
+	color:orange;
+}
+
+.parrafo-subrrayado{
+	text-decoration: underline;
+}
+
+.parrafo-fondo-azul{
+	background-color:blue;
+}
+
+a:hover{
+	color:green;
+}
+
+#parrafo-con-hover:hover{
+	background-color: rgba(0,0,0,0.6);
+	color:#ffffff;
+	text-decoration: line-through;
+}
+
+/*Comentarios*/
