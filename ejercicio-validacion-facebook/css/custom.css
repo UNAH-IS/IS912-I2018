@@ -1,0 +1,43 @@
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+
+.bg-dark {
+    background-color: #3B5998!important;
+}
+
+.btn-primary{
+	background-color: #2b457b;
+	border-color: #2b457b;
+}
+
+.btn-primary:hover{
+	background-color: #1e2d4a;
+	border-color: #1e2d4a;
+}
+
+.jumbotron input{
+	margin: 3px 0 3px 0;
+	font-size: 18px;
+}
+
+.leyenda{
+	color: #777;
+    font-size: 11px;
+}
+
+.titulo-secundario{
+	padding: 42px 0 24px;
+    font-size: 28px;
+}
+
+.contenido-izquierda img{
+	margin:5px;
+	margin-right: 15px;
+}
+
+.texto-importante{
+	font-weight: bold;
+	font-size: 17px;
+}
