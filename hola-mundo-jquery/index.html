@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.is-invalid{
+			border: 1px solid red;
+		}	
+	</style>
+</head>
+<body>
+	<div id="contenido">Aqui ya hay algo escrito. <br></div>
+
+	<input type="text" id="txt-usuario" name="txt-usuario" placeholder="Usuario">
+	<input type="password" id="txt-password" placeholder="Password">
+	<button type="button" id="btn-login">Login</button>
+	<button type="button" onclick="asignarPassword();">Asignar Password</button><br>
+	<div id="contenido2" style="display:block;background-color: black; color:white;">Este contenido se puede ocultar</div>
+	<button id="btn-mostrar">Mostrar</button>
+	<button id="btn-ocultar">Ocultar</button>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+		//Asignar el evento click utilizando una funcion anonima:
+
+		$("#btn-login").click(function(){
+			//JS Nativo:
+			//alert("Javascript nativo: " + document.getElementById("txt-usuario").value);
+
+			//Acceder a un valor con jquery
+			//alert("Acceder con JQUERY: " + $("#txt-usuario").val());
+			//document.getElementById("contenido").innerHTML = document.getElementById("txt-usuario").value + "," + document.getElementById("txt-password").value;
+
+			//Si se desea acumular el contenido sin perder el contenido anterior utilizar append() en vez de html()
+			$("#contenido").html($("#txt-usuario").val() + ", " + $("#txt-password").val());
+
+			//Asignar clases CSS con JS nativo
+			//document.getElementById("txt-usuario").classList.add("is-invalid");
+			//document.getElementById("txt-password").classList.add("is-invalid");
+
+			//Asignar clases CSS con Jquery, en caso de querer quitar una clase css utilizar removeClass()
+			$("#txt-usuario").addClass("is-invalid");
+			$("#txt-password").addClass("is-invalid");
+		});
+
+		function asignarPassword(){
+			//Asignar utilizando JS nativo
+			//document.getElementById("txt-password").value = "asd.456";
+
+			//Asignar utilizando JQUERY
+			$("#txt-password").val("asd.456");
+		}
+
+		$("#btn-mostrar").click(function(){
+			//$("#contenido2").css("display","block");
+			$("#contenido2").fadeIn(1000);
+		});
+
+		$("#btn-ocultar").click(function(){
+			//$("#contenido2").css("display","none");
+			$("#contenido2").fadeOut(1000);
+		});
+	</script>
+</body>
+</html>
+
+<!--
+Acceder por el nombre de una clase css
+$(".nombre-clase")
+
+Acceder por el tipo de etiqueta, ejemplo con todos los input
+$("input")
+
+Acceder mediante una propiedad/atributo especifico
+$("etiqueta[propiedad='valor']")
+$("input[name='txt-usuario']")
+-->

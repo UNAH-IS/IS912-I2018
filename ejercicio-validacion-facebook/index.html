@@ -71,16 +71,20 @@
                   <div class="col-xl-6">
                     <input class="form-control" type="text" id="txt-nombre" name="txt-nombre" placeholder="Nombre">
                     <div class="valid-feedback">Esta bien</div>
-                    <div class="invalid-feedback">Esta mal</div>
+                    <div class="invalid-feedback">Ingrese el nombre</div>
                   </div>
                   <div class="col-xl-6">
-                    <input class="form-control" type="text" name="txt-apellido" placeholder="Apellido">
+                    <input class="form-control" type="text" name="txt-apellido" id="txt-apellido" placeholder="Apellido">
+                    <div class="valid-feedback">Esta bien</div>
+                    <div class="invalid-feedback">Ingrese el apellido</div>
                   </div>
                   <div class="col-xl-12">
-                    <input class="form-control" type="text" name="txt-correo" placeholder="Numero de telefono o correo">
+                    <input class="form-control" type="text" name="txt-correo" id="txt-correo" placeholder="Numero de telefono o correo" onkeyup="validarCorreo(this)">
+                    <div class="valid-feedback">Esta bien</div>
+                    <div class="invalid-feedback">Ingrese el correo</div>
                   </div>
                   <div class="col-xl-12">
-                    <input class="form-control" type="password" name="txt-contrasena" placeholder="Contraseña">
+                    <input class="form-control" type="password" name="txt-contrasena" placeholder="Contraseña" onkeyup="validarContrasena(this);">
                   </div>
                   <div class="col-xl-4">
                       <select class="form-control">
