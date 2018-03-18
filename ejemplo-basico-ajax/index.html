@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<input type="text" id="txt-usuario" placeholder="Usuario">
+	<input type="password" id="txt-contrasena" placeholder="Contraseña">
+	<button type="button" id="btn-login">Login</button>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+		$("#btn-login").click(function(){
+			var parametros = 'usuario='+ $("#txt-usuario").val() +
+							'&contrasena=' + $("#txt-contrasena").val();
+
+			alert(parametros);
+			$.ajax({
+				url:'procesar.php',
+				method:'GET',
+				data:parametros, //URLEncoded
+				success:function(respuesta){
+					//Instrucciones despues de procesar la informacion
+					alert(respuesta);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
