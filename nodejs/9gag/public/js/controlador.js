@@ -23,14 +23,39 @@ function guardarRegistro(){
 	"calificacion="+$("#txt-calificacion").val()+"&"+
 	"imagen="+$("#slc-imagen").val()+"&"+
 	"usuario="+$("input[name='rbt-usuario']:checked").val();
-	console.log(parametros);
+	console.log("El cliente envía esto: "+ parametros);
 	$.ajax({
-		url:"ajax/guardar-registro.php",
+		url:"/guardar-registro",
 		method:"POST",
 		data:parametros,
 		success:function(respuesta){
-			//console.log(respuesta);
-			$("#div-memes").append(respuesta);
+			console.log("El servidor responde con esto: ");
+			console.log(respuesta);
+			var contenido = 
+				'<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">'+
+				'  <div class="well">'+
+				'    <strong>'+respuesta[0].nombre+ '</strong>'+
+				'    <p>'+respuesta[0].descripcion+'</p>'+
+				'	<button type="button" class="btn btn-rpimary" onclick="editarMeme('+respuesta[0].codigo_meme+');">Editar</button>'+
+				'    <img src="'+respuesta[0].url_imagen+ '" class="img-responsive">'+
+				'    <span class="badge">Calificación: ';
+
+				for(var j=0;j<respuesta[0].calificacion;j++)
+					contenido += '<span class="glyphicon glyphicon-star" aria-hidden="true"></span>';
+
+				contenido += '</span>'+
+					'    <span class="badge">Comentarios: 0</span>'+
+					'    <p><hr><h4>Comentarios:</h4>'+
+					'    <div id="div-comentarios-'+respuesta[0].codigo_meme+'">';
+
+				//Aqui van los comentarios
+
+				contenido += '</div></p><textarea id="txt-comentario-meme-'+respuesta[0].codigo_meme+'"class="form-control" placeholder="Comentario"></textarea>'+
+			 		'<button onclick="comentar('+respuesta[0].codigo_meme+');" type="button">Comentar</button>'+
+			 		'  </div>'+
+					 '</div>';
+					 
+				$("#div-memes").append(contenido);
 		}
 	});
 }
@@ -38,38 +63,73 @@ function guardarRegistro(){
 $(document).ready(function(){
 	//El DOM esta cargado"
 	//alert("");
+	console.log("Ejecutar peticion AJAX a obtener-usuarios");
 	$.ajax({
 		url:"/obtener-usuarios",
+		dataType:"json",
 		success:function(respuesta){
-			$("#div-usuarios").html(respuesta);
+			console.log(respuesta);
+			for (var i=0; i< respuesta.length; i++){
+				$("#div-usuarios").append('<label>'+respuesta[i].nombre+'<input type="radio" value="'+respuesta[i].codigo_usuario+'" name="rbt-usuario"><img src="'+respuesta[i].fotografia+'" class="img-responsive img-circle"></label>');	
+			}		
 		}
 	});
 
-	//cargarMemes();
+	cargarMemes();
 });
 
 
 function cargarMemes(){
+	console.log("Se cargaran los memes");
 	$.ajax({
-		url:"ajax/obtener-memes.php",
+		url:"/obtener-memes",
 		success:function(respuesta){
-			$("#div-memes").html(respuesta);
+			console.log(respuesta);
+			for (var i = 0; i<respuesta.length; i++){
+				var contenido = "";
+				contenido += 
+				'<div class="col-lg-12 col-sm-12 col-xs-12 col-md-12">'+
+				'  <div class="well">'+
+				'    <strong>'+respuesta[i].nombre+ '</strong>'+
+				'    <p>'+respuesta[i].descripcion+'</p>'+
+				'	<button type="button" class="btn btn-rpimary" onclick="editarMeme('+respuesta[i].codigo_meme+');">Editar</button>'+
+				'    <img src="'+respuesta[i].url_imagen+ '" class="img-responsive">'+
+				'    <span class="badge">Calificación: ';
+
+				for(var j=0;j<respuesta[i].calificacion;j++)
+					contenido += '<span class="glyphicon glyphicon-star" aria-hidden="true"></span>';
+
+				contenido += '</span>'+
+					'    <span class="badge">Comentarios: 0</span>'+
+					'    <p><hr><h4>Comentarios:</h4>'+
+					'    <div id="div-comentarios-'+respuesta[i].codigo_meme+'">';
+
+				//Aqui van los comentarios
+
+				contenido += '</div></p><textarea id="txt-comentario-meme-'+respuesta[i].codigo_meme+'"class="form-control" placeholder="Comentario"></textarea>'+
+			 		'<button onclick="comentar('+respuesta[i].codigo_meme+');" type="button">Comentar</button>'+
+			 		'  </div>'+
+					 '</div>';
+					 
+				$("#div-memes").append(contenido);
+			}
+			
 		}
 	});
 }
 
 function editarMeme(codigoMeme){
 	$.ajax({
-		url:"ajax/editar-meme.php",
-		data:"codigo-meme="+codigoMeme,
+		url:"seleccionar-meme",
+		data:"codigoMeme="+codigoMeme,
 		method:"POST",
 		dataType:"json",
 		success:function(respuesta){
-			$("#txt-codigo").val(respuesta.codigoMeme);
-			$("#txt-descripcion").val(respuesta.descripcion);
-			$("#txt-calificacion").val(respuesta.calificacion);
-			$("#slc-imagen").val(respuesta.urlImagen);
-			$("input[name='rbt-usuario'][value='"+respuesta.usuario+"']").attr("checked","checked");
+			$("#txt-codigo").val(respuesta[0].codigo_meme);
+			$("#txt-descripcion").val(respuesta[0].descripcion);
+			$("#txt-calificacion").val(respuesta[0].calificacion);
+			$("#slc-imagen").val(respuesta[0].url_imagen);
+			$("input[name='rbt-usuario'][value='"+respuesta[0].codigo_usuario+"']").attr("checked","checked");
 
 			$("#btn-guardar").hide();
 			$("#btn-actualizar").show();
