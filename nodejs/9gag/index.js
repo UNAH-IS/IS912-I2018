@@ -28,7 +28,12 @@ app.get("/obtener-usuarios",function(peticion, respuesta){
 	});
 });
 
+
+
 app.get("/obtener-memes", function(peticion, respuesta){	
+	/*callback = function (data){
+		respuesta.send(data);
+	}*/
 	conexion.query(
 		"SELECT codigo_meme, descripcion, fecha_publicacion,"+
 		"calificacion, url_imagen, a.codigo_usuario, b.nombre "+
@@ -37,18 +42,24 @@ app.get("/obtener-memes", function(peticion, respuesta){
 		"ON (a.codigo_usuario = b.codigo_usuario)",
 		function(error, informacion, campos){
 			if (error) throw error;
-			//console.log(informacion);
-			/*for (var i=0; i< informacion.length; i++){
-				console.log("Comentarios del meme con codigo: " + informacion[i].codigo_meme);
+			respuesta.send(informacion);
+			/*var pendientes = informacion.length;
+			//console.log(informacion[0].codigo_meme);
+			for (var i=0;i< informacion.length; i++){
+				console.log(informacion[i].descripcion);
+				//console.log("Comentarios del meme con codigo: " + registro.codigo_meme);
+				var registro = informacion[i];
 				conexion.query("SELECT codigo_comentario, descripcion, fecha_publicacion, "+
 				"codigo_usuario, codigo_meme "+
 				"FROM tbl_comentarios "+
 				"WHERE codigo_meme = " + informacion[i].codigo_meme, 
-				function(errorC, informacionC, camposC){
-					console.log(informacionC);
+				function(errorC, comentarios, camposC){
+					console.log (comentarios);
+					registro.comentarios = comentarios;
+					if ((--pendientes) === 0)
+						callback(informacion);
 				});
-			}*/
-			respuesta.send(informacion);
+			}*/			
 		}
 	);
 });
@@ -82,6 +93,38 @@ app.post("/guardar-registro", function(peticion, respuesta){
 			
 		});
 });
+
+app.post("/actualizar-registro", function(peticion, respuesta){
+	conexion.query(
+		'UPDATE tb_memes SET '+
+		'	descripcion=?, fecha_publicacion=sysdate(), calificacion=?, '+
+		'	url_imagen=?, codigo_usuario=?  '+
+		'WHERE codigo_meme=?', 
+		[
+			peticion.body.descripcion,
+			peticion.body.calificacion,
+			peticion.body.imagen,
+			peticion.body.usuario,
+			peticion.body.codigo
+		],
+		function(error, resultado){
+			if (resultado.affectedRows==1){
+				conexion.query("SELECT codigo_meme, descripcion, fecha_publicacion,"+
+				"calificacion, url_imagen, a.codigo_usuario, b.nombre "+
+				"FROM tb_memes a "+
+				"INNER JOIN tbl_usuarios b "+
+				"ON (a.codigo_usuario = b.codigo_usuario)"+
+				" WHERE a.codigo_meme = ? ",
+					[peticion.body.codigo],
+					function(errorSelect, informacion, campos){
+						if (errorSelect) throw errorSelect;
+						respuesta.send(informacion);		
+					}
+				);
+			}
+			
+		});
+})
 
 app.post("/seleccionar-meme", function(peticion, respuesta){
 	conexion.query("SELECT codigo_meme, descripcion, fecha_publicacion,"+
