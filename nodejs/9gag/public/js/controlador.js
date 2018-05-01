@@ -105,6 +105,8 @@ function cargarMemes(){
 					'    <div id="div-comentarios-'+respuesta[i].codigo_meme+'">';
 
 				//Aqui van los comentarios
+				for (var j=0; j< respuesta[i].comentarios.length;j++)
+					contenido += '<div>'+respuesta[i].comentarios[j].descripcion+'</div>';
 
 				contenido += '</div></p><textarea id="txt-comentario-meme-'+respuesta[i].codigo_meme+'"class="form-control" placeholder="Comentario"></textarea>'+
 			 		'<button onclick="comentar('+respuesta[i].codigo_meme+');" type="button">Comentar</button>'+
