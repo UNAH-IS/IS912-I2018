@@ -1,0 +1,11 @@
+$("#btn-login").click(function(){
+    $.ajax({
+        url:"/login",
+        data:"usuario="+$("#usuario").val()+"&contrasena="+$("#contrasena").val(),
+        method:"POST",
+        dataType:"json",
+        success:function(respuesta){
+            console.log(respuesta);
+        }
+    });
+});
